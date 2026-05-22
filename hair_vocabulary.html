@@ -174,6 +174,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
     <div class="hint">Toca una carta para ver la palabra y escucharla</div>
   </div>
 
+
+  <div id="s-yesno" class="screen">
+    <div class="nav-row">
+      <button class="btn" onclick="goHome()"><i class="ti ti-arrow-left"></i> Inicio</button>
+      <span class="progress-txt" id="yn-progress">1 / 8</span>
+    </div>
+    <div class="score-bar">
+      <div class="score-item"><div class="val" id="yn-correct">0</div><div class="lbl">correctas</div></div>
+      <div class="score-item"><div class="val" id="yn-wrong">0</div><div class="lbl">errores</div></div>
+      <div class="score-item"><div class="val" id="yn-streak">0</div><div class="lbl">racha 🔥</div></div>
+    </div>
+    <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:12px;margin-bottom:1rem;text-align:center">
+      <img id="yn-img" src="" alt="" style="width:100%;max-height:180px;object-fit:contain;margin-bottom:10px">
+      <div id="yn-question" style="font-size:18px;font-weight:700;color:#1a1a1a;line-height:1.4"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <button id="yn-yes" onclick="answerYN(true)" style="padding:18px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:15px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:64px">Yes, she does</button>
+      <button id="yn-no" onclick="answerYN(false)" style="padding:18px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:15px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:64px">No, she doesn't</button>
+    </div>
+    <div class="feedback" id="yn-feedback"></div>
+    <div style="text-align:center">
+      <button class="btn btn-primary" id="yn-next" onclick="nextYN()" style="display:none">
+        Siguiente <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="s-yn-result" class="screen">
+    <div class="header"><h1>¡Ronda completada! 🎉</h1></div>
+    <div class="result-box">
+      <span class="stars" id="yn-stars">⭐⭐⭐</span>
+      <span class="big" id="yn-score">8/8</span>
+      <div class="sub" id="yn-sub">¡Excelente!</div>
+    </div>
+    <div class="row-btns">
+      <button class="btn" onclick="startYesNo()"><i class="ti ti-refresh"></i> Otra ronda</button>
+      <button class="btn btn-primary" onclick="goHome()"><i class="ti ti-home"></i> Inicio</button>
+    </div>
+  </div>
+
 </div>
 
 <script>
