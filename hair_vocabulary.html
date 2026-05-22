@@ -117,6 +117,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
         <h3>Repasar cartas</h3>
         <p>Toca la carta para verla y escucharla</p>
       </div>
+    <div class="mode-card" onclick="startYesNo()">
+      <i class="ti ti-help"></i>
+      <h3>Yes or No?</h3>
+      <p>Mira la imagen y responde la pregunta en inglés</p>
+    </div>
     </div>
   </div>
 
@@ -369,6 +374,117 @@ function startFlip(){
     grid.appendChild(fc);
   });
 }
+
+// ── Yes / No mode ────────────────────────────────────────────────────────
+// 8 fixed questions using the real word images
+// Each question: { wordIdx, question (with she/he), pronoun, answer }
+// wordIdx maps to words[] array:
+// 0=long, 1=short, 2=curly, 3=straight, 4=braided, 5=blond, 6=dark, 7=red, 8=brown, 9=black
+
+const ynQuestions = [
+  { wordIdx:5, question:"Does she have blond hair?",    pronoun:"she", answer:true  },
+  { wordIdx:2, question:"Does she have straight hair?", pronoun:"she", answer:false },
+  { wordIdx:0, question:"Does she have long hair?",     pronoun:"she", answer:true  },
+  { wordIdx:6, question:"Does he have red hair?",       pronoun:"he",  answer:false },
+  { wordIdx:4, question:"Does she have braided hair?",  pronoun:"she", answer:true  },
+  { wordIdx:1, question:"Does she have curly hair?",    pronoun:"she", answer:false },
+  { wordIdx:7, question:"Does he have red hair?",       pronoun:"he",  answer:true  },
+  { wordIdx:9, question:"Does she have brown hair?",    pronoun:"she", answer:false },
+];
+
+let ynIndex=0, ynCorrect=0, ynWrong=0, ynStreak=0, ynOrder=[], ynAnswered=false;
+
+function startYesNo(){
+  ynIndex=0; ynCorrect=0; ynWrong=0; ynStreak=0;
+  ynOrder = shuffle([...Array(ynQuestions.length).keys()]);
+  show('s-yesno');
+  loadYN();
+}
+
+function loadYN(){
+  ynAnswered=false;
+  const fb=document.getElementById('yn-feedback');
+  fb.textContent=''; fb.className='feedback';
+  document.getElementById('yn-next').style.display='none';
+  document.getElementById('yn-progress').textContent=(ynIndex+1)+' / '+ynQuestions.length;
+  document.getElementById('yn-correct').textContent=ynCorrect;
+  document.getElementById('yn-wrong').textContent=ynWrong;
+  document.getElementById('yn-streak').textContent=ynStreak;
+
+  const q = ynQuestions[ynOrder[ynIndex]];
+  const w = words[q.wordIdx];
+  document.getElementById('yn-img').src = w.img;
+  document.getElementById('yn-img').alt = w.word;
+  document.getElementById('yn-question').textContent = q.question;
+
+  // Update button labels based on pronoun
+  const yes = document.getElementById('yn-yes');
+  const no  = document.getElementById('yn-no');
+  yes.textContent = q.pronoun==='she' ? "Yes, she does" : "Yes, he does";
+  no.textContent  = q.pronoun==='she' ? "No, she doesn't" : "No, he doesn't";
+  yes.style.background='#fff'; yes.style.borderColor='#e8e8e8'; yes.style.color='#1a1a1a';
+  no.style.background='#fff';  no.style.borderColor='#e8e8e8';  no.style.color='#1a1a1a';
+  yes.disabled=false; no.disabled=false;
+
+  // Speak the question
+  setTimeout(()=>speak(q.question), 350);
+}
+
+function answerYN(userSaidYes){
+  if(ynAnswered) return;
+  ynAnswered=true;
+  const q = ynQuestions[ynOrder[ynIndex]];
+  const correct = q.answer;
+  const yes=document.getElementById('yn-yes');
+  const no=document.getElementById('yn-no');
+  yes.disabled=true; no.disabled=true;
+
+  const fb=document.getElementById('yn-feedback');
+  const correctAnswer = q.pronoun==='she'
+    ? (correct ? "Yes, she does" : "No, she doesn't")
+    : (correct ? "Yes, he does"  : "No, he doesn't");
+
+  if(userSaidYes === correct){
+    ynCorrect++; ynStreak++;
+    const btn = userSaidYes ? yes : no;
+    btn.style.background='#ecfdf5'; btn.style.borderColor='#059669'; btn.style.color='#065f46';
+    const extra = ynStreak>=3 ? ' 🔥 Racha '+ynStreak+'!' : '';
+    fb.textContent='✓ ¡Correcto!'+extra; fb.className='feedback correct';
+    speak(correctAnswer);
+  } else {
+    ynWrong++; ynStreak=0;
+    const wrongBtn = userSaidYes ? yes : no;
+    const rightBtn = userSaidYes ? no  : yes;
+    wrongBtn.style.background='#fef2f2'; wrongBtn.style.borderColor='#dc2626'; wrongBtn.style.color='#991b1b';
+    rightBtn.style.background='#ecfdf5'; rightBtn.style.borderColor='#059669'; rightBtn.style.color='#065f46';
+    fb.textContent='✗ Era: '+correctAnswer; fb.className='feedback wrong';
+    speak(correctAnswer);
+  }
+  document.getElementById('yn-correct').textContent=ynCorrect;
+  document.getElementById('yn-wrong').textContent=ynWrong;
+  document.getElementById('yn-streak').textContent=ynStreak;
+  document.getElementById('yn-next').style.display='inline-flex';
+}
+
+function nextYN(){
+  ynIndex++;
+  if(ynIndex>=ynQuestions.length){ showYNResult(); return; }
+  loadYN();
+}
+
+function showYNResult(){
+  show('s-yn-result');
+  document.getElementById('yn-score').textContent=ynCorrect+'/'+ynQuestions.length;
+  const pct=ynCorrect/ynQuestions.length;
+  let stars,sub;
+  if(pct>=0.9){stars='⭐⭐⭐';sub='¡Perfecto! ¡Lo sabe todo!';}
+  else if(pct>=0.7){stars='⭐⭐';sub='¡Muy bien! Casi perfecto.';}
+  else if(pct>=0.5){stars='⭐';sub='Bien, practiquemos más.';}
+  else{stars='💪';sub='¡Sigamos, tú puedes!';}
+  document.getElementById('yn-stars').textContent=stars;
+  document.getElementById('yn-sub').textContent=sub;
+}
+
 </script>
 </body>
 </html>
