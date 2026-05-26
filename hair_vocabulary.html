@@ -117,6 +117,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
         <h3>Repasar cartas</h3>
         <p>Toca la carta para verla y escucharla</p>
       </div>
+    <div class="mode-card" onclick="startYesNo()">
+      <i class="ti ti-help"></i>
+      <h3>Yes or No?</h3>
+      <p>Mira la imagen y responde la pregunta</p>
+    </div>
     </div>
   </div>
 
@@ -178,30 +183,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
     <div class="score-bar">
       <div class="score-item"><div class="val" id="yn-c">0</div><div class="lbl">correctas</div></div>
       <div class="score-item"><div class="val" id="yn-w">0</div><div class="lbl">errores</div></div>
-      <div class="score-item"><div class="val" id="yn-s">0</div><div class="lbl">racha 🔥</div></div>
+      <div class="score-item"><div class="val" id="yn-s">0</div><div class="lbl">racha &#128293;</div></div>
     </div>
     <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:12px;margin-bottom:1rem;text-align:center">
       <img id="yn-img" src="" alt="" style="width:100%;max-height:170px;object-fit:contain;margin-bottom:10px;border-radius:8px">
       <div id="yn-q" style="font-size:18px;font-weight:700;color:#1a1a1a;line-height:1.4"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
-      <button id="yn-yes" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">Yes, she does</button>
-      <button id="yn-no" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">No, she doesn&#39;t</button>
+      <button id="yn-yes" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">Yes</button>
+      <button id="yn-no" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">No</button>
     </div>
     <div class="feedback" id="yn-fb"></div>
-    <div style="text-align:center"><button class="btn btn-primary" id="yn-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button></div>
-  </div>
-
-  <div id="s-yn-result" class="screen">
-    <div class="header"><h1>&#127881; Ronda completada!</h1></div>
-    <div class="result-box">
-      <span class="stars" id="yn-stars">&#11088;&#11088;&#11088;</span>
-      <span class="big" id="yn-score">8/8</span>
-      <div class="sub" id="yn-sub">Excelente!</div>
-    </div>
-    <div class="row-btns">
-      <button class="btn" onclick="startYesNo()"><i class="ti ti-refresh"></i> Otra vez</button>
-      <button class="btn btn-primary" onclick="goHome()"><i class="ti ti-home"></i> Inicio</button>
+    <div style="text-align:center">
+      <button class="btn btn-primary" id="yn-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button>
     </div>
   </div>
 
@@ -297,18 +291,12 @@ function shuffle(arr) {
 }
 
 function startQuiz(){
-  try {
-    qCorrect=0;qWrong=0;qStreak=0;qIndex=0;
-    qOrder=shuffle([...Array(words.length).keys()]);
-    show('s-quiz');
-    loadQuestion();
-  } catch(e) {
-    alert('Error en startQuiz: ' + e.message);
-  }
+  qCorrect=0;qWrong=0;qStreak=0;qIndex=0;
+  qOrder=shuffle([...Array(words.length).keys()]);
+  show('s-quiz');loadQuestion();
 }
 
 function loadQuestion(){
-  try {
   answered=false;
   const fb=document.getElementById('q-feedback');
   fb.textContent='';fb.className='feedback';
@@ -330,19 +318,19 @@ function loadQuestion(){
 
   const container=document.getElementById('q-options');
   container.innerHTML='';
-  opts.forEach(function(oidx){
-    const w=words[oidx];
+  opts.forEach(idx=>{
+    const w=words[idx];
     const d=document.createElement('div');
     d.className='option-card';
     d.style.borderTop='3px solid '+w.color;
-    d.innerHTML='<img class="option-img" src="'+w.img+'" alt="'+w.word+'" loading="eager"><div class="option-label" id="lbl-'+oidx+'">'+w.word+'</div>';
-    d.addEventListener('touchend', function(e){ e.preventDefault(); selectOption(d,oidx,ci); },{passive:false});
-    d.onclick=function(){ selectOption(d,oidx,ci); };
+    d.innerHTML='<img class="option-img" src="'+w.img+'" alt="'+w.word+'" loading="eager"><div class="option-label" id="lbl-'+idx+'">'+w.word+'</div>';
+    // Both touch and click for max compatibility
+    d.addEventListener('touchend', e=>{ e.preventDefault(); selectOption(d,idx,ci); },{passive:false});
+    d.onclick=()=>selectOption(d,idx,ci);
     container.appendChild(d);
   });
 
   setTimeout(()=>speak(currentWord.word), 350);
-  } catch(e) { alert('Error en loadQuestion: ' + e.message); }
 }
 
 function selectOption(el,chosen,correct){
@@ -412,7 +400,7 @@ function startFlip(){
   });
 }
 
-var hairYNQ = [
+var ynQs = [
   {wi:5, q:"Does she have blond hair?",    p:"she", a:true},
   {wi:2, q:"Does she have straight hair?", p:"she", a:false},
   {wi:0, q:"Does she have long hair?",     p:"she", a:true},
@@ -422,108 +410,101 @@ var hairYNQ = [
   {wi:7, q:"Does he have red hair?",       p:"he",  a:true},
   {wi:9, q:"Does she have brown hair?",    p:"she", a:false}
 ];
+var ynIdx=0, ynC=0, ynW=0, ynStr=0, ynOrder=[], ynDone=false;
 
-var ynIdx=0, ynC=0, ynW=0, ynS=0, ynOrder=[], ynAnswered=false;
-
-function startYesNo() {
-  ynIdx=0; ynC=0; ynW=0; ynS=0; ynAnswered=false;
-  ynOrder = shuffle(makeRange(hairYNQ.length));
-  show("s-yesno");
-  loadYN();
-}
-
-function makeRange(n) {
+function ynRange() {
   var a = [];
-  for (var i=0; i<n; i++) a.push(i);
+  for (var i=0; i<ynQs.length; i++) a.push(i);
   return a;
 }
 
-function loadYN() {
-  ynAnswered = false;
-  document.getElementById("yn-fb").textContent = "";
-  document.getElementById("yn-fb").className = "feedback";
-  document.getElementById("yn-next").style.display = "none";
-  document.getElementById("yn-prog").textContent = (ynIdx+1) + " / 8";
-  document.getElementById("yn-c").textContent = ynC;
-  document.getElementById("yn-w").textContent = ynW;
-  document.getElementById("yn-s").textContent = ynS;
+function startYesNo() {
+  ynIdx=0; ynC=0; ynW=0; ynStr=0; ynDone=false;
+  ynOrder = shuffle(ynRange());
+  show('s-yesno');
+  ynLoad();
+}
 
-  var q = hairYNQ[ynOrder[ynIdx]];
+function ynLoad() {
+  ynDone = false;
+  document.getElementById('yn-fb').textContent = '';
+  document.getElementById('yn-fb').className = 'feedback';
+  document.getElementById('yn-next').style.display = 'none';
+  document.getElementById('yn-prog').textContent = (ynIdx+1) + ' / 8';
+  document.getElementById('yn-c').textContent = ynC;
+  document.getElementById('yn-w').textContent = ynW;
+  document.getElementById('yn-s').textContent = ynStr;
+
+  var q = ynQs[ynOrder[ynIdx]];
   var w = words[q.wi];
-  document.getElementById("yn-img").src = w.img;
-  document.getElementById("yn-img").alt = w.word;
-  document.getElementById("yn-q").textContent = q.q;
+  document.getElementById('yn-img').src = w.img;
+  document.getElementById('yn-img').alt = w.word;
+  document.getElementById('yn-q').textContent = q.q;
 
-  var yesBtn = document.getElementById("yn-yes");
-  var noBtn  = document.getElementById("yn-no");
-  yesBtn.textContent = q.p === "she" ? "Yes, she does" : "Yes, he does";
-  noBtn.textContent  = q.p === "she" ? "No, she doesn\u2019t" : "No, he doesn\u2019t";
-  yesBtn.style.cssText = "padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px";
-  noBtn.style.cssText  = yesBtn.style.cssText;
-  yesBtn.disabled = false;
-  noBtn.disabled  = false;
+  var yBtn = document.getElementById('yn-yes');
+  var nBtn = document.getElementById('yn-no');
+  yBtn.textContent = q.p === 'she' ? 'Yes, she does' : 'Yes, he does';
+  nBtn.textContent = q.p === 'she' ? "No, she doesn't" : "No, he doesn't";
+  yBtn.style.background='#fff'; yBtn.style.borderColor='#e8e8e8'; yBtn.style.color='#1a1a1a';
+  nBtn.style.background='#fff'; nBtn.style.borderColor='#e8e8e8'; nBtn.style.color='#1a1a1a';
+  yBtn.disabled = false;
+  nBtn.disabled = false;
 
-  yesBtn.ontouchend = function(e) { e.preventDefault(); answerYN(true); };
-  noBtn.ontouchend  = function(e) { e.preventDefault(); answerYN(false); };
-  yesBtn.onclick = function() { answerYN(true); };
-  noBtn.onclick  = function() { answerYN(false); };
-
-  document.getElementById("yn-next").ontouchend = function(e) { e.preventDefault(); nextYN(); };
-  document.getElementById("yn-next").onclick = nextYN;
+  yBtn.ontouchend = function(e) { e.preventDefault(); ynAnswer(true); };
+  nBtn.ontouchend = function(e) { e.preventDefault(); ynAnswer(false); };
+  yBtn.onclick = function() { ynAnswer(true); };
+  nBtn.onclick = function() { ynAnswer(false); };
+  document.getElementById('yn-next').onclick = ynNext;
+  document.getElementById('yn-next').ontouchend = function(e) { e.preventDefault(); ynNext(); };
 
   setTimeout(function() { speak(q.q); }, 350);
 }
 
-function answerYN(userYes) {
-  if (ynAnswered) return;
-  ynAnswered = true;
-  var q = hairYNQ[ynOrder[ynIdx]];
-  var yesBtn = document.getElementById("yn-yes");
-  var noBtn  = document.getElementById("yn-no");
-  yesBtn.disabled = true;
-  noBtn.disabled  = true;
-  var correctAns = q.p === "she"
-    ? (q.a ? "Yes, she does" : "No, she doesn\u2019t")
-    : (q.a ? "Yes, he does"  : "No, he doesn\u2019t");
-  var fb = document.getElementById("yn-fb");
+function ynAnswer(userYes) {
+  if (ynDone) return;
+  ynDone = true;
+  var q = ynQs[ynOrder[ynIdx]];
+  var yBtn = document.getElementById('yn-yes');
+  var nBtn = document.getElementById('yn-no');
+  yBtn.disabled = true;
+  nBtn.disabled = true;
+  var ans = q.p === 'she'
+    ? (q.a ? 'Yes, she does' : "No, she doesn't")
+    : (q.a ? 'Yes, he does'  : "No, he doesn't");
+  var fb = document.getElementById('yn-fb');
   if (userYes === q.a) {
-    ynC++; ynS++;
-    (userYes ? yesBtn : noBtn).style.background="#ecfdf5";
-    (userYes ? yesBtn : noBtn).style.borderColor="#059669";
-    (userYes ? yesBtn : noBtn).style.color="#065f46";
-    fb.textContent = "\u2713 Correcto!" + (ynS>=3 ? " \uD83D\uDD25 Racha "+ynS+"!" : "");
-    fb.className = "feedback correct";
+    ynC++; ynStr++;
+    var cb = userYes ? yBtn : nBtn;
+    cb.style.background='#ecfdf5'; cb.style.borderColor='#059669'; cb.style.color='#065f46';
+    fb.textContent = (ynStr>=3) ? '&#10003; Correcto! &#128293; Racha '+ynStr+'!' : '&#10003; Correcto!';
+    fb.className = 'feedback correct';
   } else {
-    ynW++; ynS=0;
-    (userYes ? yesBtn : noBtn).style.background="#fef2f2";
-    (userYes ? yesBtn : noBtn).style.borderColor="#dc2626";
-    (userYes ? yesBtn : noBtn).style.color="#991b1b";
-    (userYes ? noBtn : yesBtn).style.background="#ecfdf5";
-    (userYes ? noBtn : yesBtn).style.borderColor="#059669";
-    (userYes ? noBtn : yesBtn).style.color="#065f46";
-    fb.textContent = "\u2717 Era: " + correctAns;
-    fb.className = "feedback wrong";
+    ynW++; ynStr=0;
+    var wb = userYes ? yBtn : nBtn;
+    var rb = userYes ? nBtn : yBtn;
+    wb.style.background='#fef2f2'; wb.style.borderColor='#dc2626'; wb.style.color='#991b1b';
+    rb.style.background='#ecfdf5'; rb.style.borderColor='#059669'; rb.style.color='#065f46';
+    fb.textContent = 'Era: ' + ans;
+    fb.className = 'feedback wrong';
   }
-  speak(correctAns);
-  document.getElementById("yn-c").textContent = ynC;
-  document.getElementById("yn-w").textContent = ynW;
-  document.getElementById("yn-s").textContent = ynS;
-  document.getElementById("yn-next").style.display = "inline-flex";
+  speak(ans);
+  document.getElementById('yn-c').textContent = ynC;
+  document.getElementById('yn-w').textContent = ynW;
+  document.getElementById('yn-s').textContent = ynStr;
+  document.getElementById('yn-next').style.display = 'inline-flex';
 }
 
-function nextYN() {
+function ynNext() {
   ynIdx++;
-  if (ynIdx >= hairYNQ.length) {
-    show("s-yn-result");
-    document.getElementById("yn-score").textContent = ynC + "/8";
+  if (ynIdx >= ynQs.length) {
+    show('s-result');
+    document.getElementById('r-score').textContent = ynC + '/8';
     var pct = ynC / 8;
-    var stars = pct >= 0.9 ? "\u2B50\u2B50\u2B50" : pct >= 0.7 ? "\u2B50\u2B50" : pct >= 0.5 ? "\u2B50" : "\uD83D\uDCAA";
-    var sub = pct >= 0.9 ? "Perfecto!" : pct >= 0.7 ? "Muy bien!" : pct >= 0.5 ? "Practiquemos mas." : "Sigamos!";
-    document.getElementById("yn-stars").textContent = stars;
-    document.getElementById("yn-sub").textContent = sub;
+    document.getElementById('r-stars').textContent = pct>=0.9?'&#11088;&#11088;&#11088;':pct>=0.7?'&#11088;&#11088;':pct>=0.5?'&#11088;':'&#128170;';
+    document.getElementById('r-sub').textContent = pct>=0.9?'Perfecto!':pct>=0.7?'Muy bien!':pct>=0.5?'Practiquemos mas.':'Sigamos!';
     return;
   }
-  loadYN();
+  ynLoad();
 }
 
 </script>
