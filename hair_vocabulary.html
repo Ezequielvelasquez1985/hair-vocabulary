@@ -297,12 +297,18 @@ function shuffle(arr) {
 }
 
 function startQuiz(){
-  qCorrect=0;qWrong=0;qStreak=0;qIndex=0;
-  qOrder=shuffle([...Array(words.length).keys()]);
-  show('s-quiz');loadQuestion();
+  try {
+    qCorrect=0;qWrong=0;qStreak=0;qIndex=0;
+    qOrder=shuffle([...Array(words.length).keys()]);
+    show('s-quiz');
+    loadQuestion();
+  } catch(e) {
+    alert('Error en startQuiz: ' + e.message);
+  }
 }
 
 function loadQuestion(){
+  try {
   answered=false;
   const fb=document.getElementById('q-feedback');
   fb.textContent='';fb.className='feedback';
@@ -336,6 +342,7 @@ function loadQuestion(){
   });
 
   setTimeout(()=>speak(currentWord.word), 350);
+  } catch(e) { alert('Error en loadQuestion: ' + e.message); }
 }
 
 function selectOption(el,chosen,correct){
