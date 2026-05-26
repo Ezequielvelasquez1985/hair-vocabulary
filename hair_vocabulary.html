@@ -88,6 +88,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
 
 /* ── Audio warning ── */
 #audio-warn{display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:12px;color:#92400e;text-align:center;line-height:1.5}
+
+/* ── Body / Grammar shared ── */
+.unit-card{background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;-webkit-user-select:none;user-select:none}
+.unit-card:active{background:#f0f0ee;transform:scale(.98)}
+.unit-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.unit-info h3{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.unit-info p{font-size:11px;color:#999}
+.sec-title{font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;padding-left:2px}
+.gram-card{background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:16px;margin-bottom:1rem}
+.gram-card h3{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:12px}
+.gram-table{width:100%;margin-bottom:10px}
+.gram-table td{padding:6px 8px;font-size:13px}
+.gsubj{color:#1a1a1a;font-weight:600}
+.vg{background:#ecfdf5;color:#059669;font-weight:700;border-radius:6px;padding:3px 8px;display:inline-block}
+.vb{background:#dbeafe;color:#2563eb;font-weight:700;border-radius:6px;padding:3px 8px;display:inline-block}
+.vr{background:#fef2f2;color:#dc2626;font-weight:700;border-radius:6px;padding:3px 8px;display:inline-block}
+.vp{background:#f3e8ff;color:#9333ea;font-weight:700;border-radius:6px;padding:3px 8px;display:inline-block}
+.gex{background:#f5f4f0;border-radius:8px;padding:10px 12px;margin-top:6px}
+.gex p{font-size:13px;color:#555;line-height:1.9}
+.hlg{color:#059669;font-weight:700}
+.hlb{color:#2563eb;font-weight:700}
+.hlr{color:#dc2626;font-weight:700}
+.hlp{color:#9333ea;font-weight:700}
+.gram-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:.85rem}
+.gram-opt{background:#fff;border:1.5px solid #e8e8e8;border-radius:12px;padding:14px 16px;cursor:pointer;font-size:15px;font-weight:600;color:#1a1a1a;text-align:center;-webkit-user-select:none;user-select:none;min-height:52px;display:flex;align-items:center;justify-content:center}
+.gram-opt:active:not(.gdisabled){background:#f0f0ee}
+.gram-opt.correct{border-color:#059669!important;background:#ecfdf5!important;color:#065f46!important}
+.gram-opt.wrong{border-color:#dc2626!important;background:#fef2f2!important;color:#991b1b!important}
+.gram-opt.gdisabled{pointer-events:none}
+.btn-green{background:#059669;color:#fff;border-color:#059669;min-height:44px}
+.btn-green:active{background:#047857}
 </style>
 </head>
 <body>
@@ -105,6 +136,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
       <h1>Hair vocabulary 💇</h1>
       <p>Elige un modo para practicar</p>
     </div>
+    <div style="text-align:center;margin-bottom:8px">
+      <button class="btn" id="btn-toggle-extra" style="font-size:12px;padding:6px 14px;min-height:36px">&#128218; Gram&#225;tica &amp; Body Parts &#9660;</button>
+    </div>
     <div id="audio-warn">⚠️ El audio no funcionó en este dispositivo. Las palabras aparecerán animadas en pantalla igual puedes practicar.</div>
     <div class="mode-grid">
       <div class="mode-card" onclick="startQuiz()">
@@ -117,12 +151,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
         <h3>Repasar cartas</h3>
         <p>Toca la carta para verla y escucharla</p>
       </div>
-    <div class="mode-card" onclick="startYesNo()">
-      <i class="ti ti-help"></i>
-      <h3>Yes or No?</h3>
-      <p>Mira la imagen y responde la pregunta</p>
     </div>
-    </div>
+  </div>
+
+  <!-- Body Parts + Grammar menu -->
+  <div id="s-home-extra" style="display:none">
+    <div class="sec-title" style="margin-top:16px">&#129728; Body Parts</div>
+    <div class="unit-card" id="btn-body-vocab"><div class="unit-icon" style="background:#fef3c7">&#128064;</div><div class="unit-info"><h3>Vocabulario &#8212; Body Parts</h3><p>Escuchar &#8226; Repasar cartas</p></div></div>
+    <div class="sec-title" style="margin-top:12px">&#128218; Gram&#225;tica</div>
+    <div class="unit-card" id="btn-gr-have"><div class="unit-icon" style="background:#ecfdf5">&#128218;</div><div class="unit-info"><h3>have / has</h3><p>Ver regla + practicar</p></div></div>
+    <div class="unit-card" id="btn-gr-dont"><div class="unit-icon" style="background:#fef2f2">&#128218;</div><div class="unit-info"><h3>don&#39;t / doesn&#39;t have</h3><p>Ver regla + practicar</p></div></div>
+    <div class="unit-card" id="btn-gr-does"><div class="unit-icon" style="background:#ede9fe">&#128218;</div><div class="unit-info"><h3>Do / Does questions</h3><p>Ver regla + practicar</p></div></div>
   </div>
 
   <div id="s-quiz" class="screen">
@@ -183,21 +222,81 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-seri
     <div class="score-bar">
       <div class="score-item"><div class="val" id="yn-c">0</div><div class="lbl">correctas</div></div>
       <div class="score-item"><div class="val" id="yn-w">0</div><div class="lbl">errores</div></div>
-      <div class="score-item"><div class="val" id="yn-s">0</div><div class="lbl">racha &#128293;</div></div>
+      <div class="score-item"><div class="val" id="yn-s">0</div><div class="lbl">racha 🔥</div></div>
     </div>
     <div style="background:#fff;border:1.5px solid #e8e8e8;border-radius:14px;padding:12px;margin-bottom:1rem;text-align:center">
       <img id="yn-img" src="" alt="" style="width:100%;max-height:170px;object-fit:contain;margin-bottom:10px;border-radius:8px">
       <div id="yn-q" style="font-size:18px;font-weight:700;color:#1a1a1a;line-height:1.4"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
-      <button id="yn-yes" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">Yes</button>
-      <button id="yn-no" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">No</button>
+      <button id="yn-yes" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">Yes, she does</button>
+      <button id="yn-no" style="padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px">No, she doesn&#39;t</button>
     </div>
     <div class="feedback" id="yn-fb"></div>
-    <div style="text-align:center">
-      <button class="btn btn-primary" id="yn-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button>
+    <div style="text-align:center"><button class="btn btn-primary" id="yn-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button></div>
+  </div>
+
+  <div id="s-yn-result" class="screen">
+    <div class="header"><h1>&#127881; Ronda completada!</h1></div>
+    <div class="result-box">
+      <span class="stars" id="yn-stars">&#11088;&#11088;&#11088;</span>
+      <span class="big" id="yn-score">8/8</span>
+      <div class="sub" id="yn-sub">Excelente!</div>
+    </div>
+    <div class="row-btns">
+      <button class="btn" onclick="startYesNo()"><i class="ti ti-refresh"></i> Otra vez</button>
+      <button class="btn btn-primary" onclick="goHome()"><i class="ti ti-home"></i> Inicio</button>
     </div>
   </div>
+
+
+<!-- BODY HOME -->
+<div id="s-body-home" class="screen">
+  <div class="nav-row"><button class="btn" id="bbh-back"><i class="ti ti-arrow-left"></i> Inicio</button><span class="progress-txt">Body Parts</span></div>
+  <div class="unit-card" id="bbh-quiz"><div class="unit-icon" style="background:#fef3c7">&#128066;</div><div class="unit-info"><h3>Escuchar y encontrar</h3><p>Escucha y toca la imagen correcta</p></div></div>
+  <div class="unit-card" id="bbh-flip"><div class="unit-icon" style="background:#e0f2fe">&#127183;</div><div class="unit-info"><h3>Repasar cartas</h3><p>Toca para ver y escuchar</p></div></div>
+</div>
+
+<!-- BODY QUIZ -->
+<div id="s-body-quiz" class="screen">
+  <div class="nav-row"><button class="btn" id="bbq-back"><i class="ti ti-arrow-left"></i> Atr&#225;s</button><span class="progress-txt" id="bq-prog">1/14</span></div>
+  <div class="score-bar"><div class="score-item"><div class="val" id="bq-c">0</div><div class="lbl">correctas</div></div><div class="score-item"><div class="val" id="bq-w">0</div><div class="lbl">errores</div></div><div class="score-item"><div class="val" id="bq-s">0</div><div class="lbl">racha &#128293;</div></div></div>
+  <div class="question-area"><p>&#191;Cu&#225;l de estas im&#225;genes es...</p><div class="say-word" id="bq-word">&#8212;</div><button class="speak-btn" id="bq-speak"><i class="ti ti-volume"></i> Escuchar</button></div>
+  <div class="options-grid" id="bq-opts"></div>
+  <div class="feedback" id="bq-fb"></div>
+  <div style="text-align:center"><button class="btn btn-primary" id="bq-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button></div>
+</div>
+
+<!-- BODY FLIP -->
+<div id="s-body-flip" class="screen">
+  <div class="nav-row"><button class="btn" id="bbf-back"><i class="ti ti-arrow-left"></i> Atr&#225;s</button><span class="progress-txt">Toca para girar</span></div>
+  <div class="flip-grid" id="body-flip-grid"></div>
+  <div class="hint">Toca una carta para ver la palabra y escucharla</div>
+</div>
+
+<!-- GRAMMAR EXPLANATION -->
+<div id="s-grammar" class="screen">
+  <div class="nav-row"><button class="btn" id="gr-back"><i class="ti ti-arrow-left"></i> Inicio</button><span class="progress-txt" id="gr-title">Gram&#225;tica</span></div>
+  <div id="gr-content"></div>
+  <div style="text-align:center;margin-bottom:1rem"><button class="btn btn-green" id="gr-practice"><i class="ti ti-pencil"></i> &#161;Practicar ahora!</button></div>
+</div>
+
+<!-- GRAMMAR QUIZ -->
+<div id="s-grammar-quiz" class="screen">
+  <div class="nav-row"><button class="btn" id="gq-back"><i class="ti ti-arrow-left"></i> Atr&#225;s</button><span class="progress-txt" id="gq-prog">1/8</span></div>
+  <div class="score-bar"><div class="score-item"><div class="val" id="gq-c">0</div><div class="lbl">correctas</div></div><div class="score-item"><div class="val" id="gq-w">0</div><div class="lbl">errores</div></div><div class="score-item"><div class="val" id="gq-s">0</div><div class="lbl">racha &#128293;</div></div></div>
+  <div class="question-area"><p>Completa la oraci&#243;n:</p><div class="say-word" id="gq-sentence" style="font-size:17px"></div></div>
+  <div class="gram-opts" id="gq-opts"></div>
+  <div class="feedback" id="gq-fb"></div>
+  <div style="text-align:center"><button class="btn btn-primary" id="gq-next" style="display:none">Siguiente <i class="ti ti-arrow-right"></i></button></div>
+</div>
+
+<!-- SHARED RESULT -->
+<div id="s-result2" class="screen">
+  <div class="header"><h1>&#127881; &#161;Ronda completada!</h1></div>
+  <div class="result-box"><span class="stars" id="r2-stars">&#11088;&#11088;&#11088;</span><span class="big" id="r2-score">10/10</span><div class="sub" id="r2-sub">&#161;Excelente!</div></div>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn" id="r2-retry"><i class="ti ti-refresh"></i> Otra vez</button><button class="btn btn-primary" id="r2-home"><i class="ti ti-home"></i> Inicio</button></div>
+</div>
 
 </div>
 
@@ -309,28 +408,30 @@ function loadQuestion(){
   document.getElementById('q-wrong').textContent=qWrong;
   document.getElementById('q-streak').textContent=qStreak;
 
-  const ci=qOrder[qIndex];
+  var ci=qOrder[qIndex];
   currentWord=words[ci];
   document.getElementById('q-word').textContent=currentWord.word;
 
-  const pool=shuffle([...Array(words.length).keys()].filter(i=>i!==ci));
-  const opts=shuffle([ci,...pool.slice(0,3)]);
+  var allIdx=[]; for(var _k=0;_k<words.length;_k++){if(_k!==ci)allIdx.push(_k);}
+  var pool=shuffle(allIdx);
+  var opts=shuffle([ci,pool[0],pool[1],pool[2]]);
 
-  const container=document.getElementById('q-options');
+  var container=document.getElementById('q-options');
   container.innerHTML='';
-  opts.forEach(idx=>{
-    const w=words[idx];
-    const d=document.createElement('div');
-    d.className='option-card';
-    d.style.borderTop='3px solid '+w.color;
-    d.innerHTML='<img class="option-img" src="'+w.img+'" alt="'+w.word+'" loading="eager"><div class="option-label" id="lbl-'+idx+'">'+w.word+'</div>';
-    // Both touch and click for max compatibility
-    d.addEventListener('touchend', e=>{ e.preventDefault(); selectOption(d,idx,ci); },{passive:false});
-    d.onclick=()=>selectOption(d,idx,ci);
-    container.appendChild(d);
-  });
+  for(var _i=0;_i<opts.length;_i++){
+    (function(oidx){
+      var w=words[oidx];
+      var d=document.createElement('div');
+      d.className='option-card';
+      d.style.borderTop='3px solid '+w.color;
+      d.innerHTML='<img class="option-img" src="'+w.img+'" alt="'+w.word+'" loading="eager"><div class="option-label" id="lbl-'+oidx+'">'+w.word+'</div>';
+      d.addEventListener('touchend',function(e){e.preventDefault();selectOption(d,oidx,ci);},{passive:false});
+      d.onclick=function(){selectOption(d,oidx,ci);};
+      container.appendChild(d);
+    })(opts[_i]);
+  }
 
-  setTimeout(()=>speak(currentWord.word), 350);
+  setTimeout(function(){speak(currentWord.word);},350);
 }
 
 function selectOption(el,chosen,correct){
@@ -400,7 +501,7 @@ function startFlip(){
   });
 }
 
-var ynQs = [
+var hairYNQ = [
   {wi:5, q:"Does she have blond hair?",    p:"she", a:true},
   {wi:2, q:"Does she have straight hair?", p:"she", a:false},
   {wi:0, q:"Does she have long hair?",     p:"she", a:true},
@@ -410,101 +511,374 @@ var ynQs = [
   {wi:7, q:"Does he have red hair?",       p:"he",  a:true},
   {wi:9, q:"Does she have brown hair?",    p:"she", a:false}
 ];
-var ynIdx=0, ynC=0, ynW=0, ynStr=0, ynOrder=[], ynDone=false;
 
-function ynRange() {
+var ynIdx=0, ynC=0, ynW=0, ynS=0, ynOrder=[], ynAnswered=false;
+
+function startYesNo() {
+  ynIdx=0; ynC=0; ynW=0; ynS=0; ynAnswered=false;
+  ynOrder = shuffle(makeRange(hairYNQ.length));
+  show("s-yesno");
+  loadYN();
+}
+
+function makeRange(n) {
   var a = [];
-  for (var i=0; i<ynQs.length; i++) a.push(i);
+  for (var i=0; i<n; i++) a.push(i);
   return a;
 }
 
-function startYesNo() {
-  ynIdx=0; ynC=0; ynW=0; ynStr=0; ynDone=false;
-  ynOrder = shuffle(ynRange());
-  show('s-yesno');
-  ynLoad();
-}
+function loadYN() {
+  ynAnswered = false;
+  document.getElementById("yn-fb").textContent = "";
+  document.getElementById("yn-fb").className = "feedback";
+  document.getElementById("yn-next").style.display = "none";
+  document.getElementById("yn-prog").textContent = (ynIdx+1) + " / 8";
+  document.getElementById("yn-c").textContent = ynC;
+  document.getElementById("yn-w").textContent = ynW;
+  document.getElementById("yn-s").textContent = ynS;
 
-function ynLoad() {
-  ynDone = false;
-  document.getElementById('yn-fb').textContent = '';
-  document.getElementById('yn-fb').className = 'feedback';
-  document.getElementById('yn-next').style.display = 'none';
-  document.getElementById('yn-prog').textContent = (ynIdx+1) + ' / 8';
-  document.getElementById('yn-c').textContent = ynC;
-  document.getElementById('yn-w').textContent = ynW;
-  document.getElementById('yn-s').textContent = ynStr;
-
-  var q = ynQs[ynOrder[ynIdx]];
+  var q = hairYNQ[ynOrder[ynIdx]];
   var w = words[q.wi];
-  document.getElementById('yn-img').src = w.img;
-  document.getElementById('yn-img').alt = w.word;
-  document.getElementById('yn-q').textContent = q.q;
+  document.getElementById("yn-img").src = w.img;
+  document.getElementById("yn-img").alt = w.word;
+  document.getElementById("yn-q").textContent = q.q;
 
-  var yBtn = document.getElementById('yn-yes');
-  var nBtn = document.getElementById('yn-no');
-  yBtn.textContent = q.p === 'she' ? 'Yes, she does' : 'Yes, he does';
-  nBtn.textContent = q.p === 'she' ? "No, she doesn't" : "No, he doesn't";
-  yBtn.style.background='#fff'; yBtn.style.borderColor='#e8e8e8'; yBtn.style.color='#1a1a1a';
-  nBtn.style.background='#fff'; nBtn.style.borderColor='#e8e8e8'; nBtn.style.color='#1a1a1a';
-  yBtn.disabled = false;
-  nBtn.disabled = false;
+  var yesBtn = document.getElementById("yn-yes");
+  var noBtn  = document.getElementById("yn-no");
+  yesBtn.textContent = q.p === "she" ? "Yes, she does" : "Yes, he does";
+  noBtn.textContent  = q.p === "she" ? "No, she doesn\u2019t" : "No, he doesn\u2019t";
+  yesBtn.style.cssText = "padding:16px 8px;background:#fff;border:2px solid #e8e8e8;border-radius:14px;font-size:14px;font-weight:700;color:#1a1a1a;cursor:pointer;min-height:60px";
+  noBtn.style.cssText  = yesBtn.style.cssText;
+  yesBtn.disabled = false;
+  noBtn.disabled  = false;
 
-  yBtn.ontouchend = function(e) { e.preventDefault(); ynAnswer(true); };
-  nBtn.ontouchend = function(e) { e.preventDefault(); ynAnswer(false); };
-  yBtn.onclick = function() { ynAnswer(true); };
-  nBtn.onclick = function() { ynAnswer(false); };
-  document.getElementById('yn-next').onclick = ynNext;
-  document.getElementById('yn-next').ontouchend = function(e) { e.preventDefault(); ynNext(); };
+  yesBtn.ontouchend = function(e) { e.preventDefault(); answerYN(true); };
+  noBtn.ontouchend  = function(e) { e.preventDefault(); answerYN(false); };
+  yesBtn.onclick = function() { answerYN(true); };
+  noBtn.onclick  = function() { answerYN(false); };
+
+  document.getElementById("yn-next").ontouchend = function(e) { e.preventDefault(); nextYN(); };
+  document.getElementById("yn-next").onclick = nextYN;
 
   setTimeout(function() { speak(q.q); }, 350);
 }
 
-function ynAnswer(userYes) {
-  if (ynDone) return;
-  ynDone = true;
-  var q = ynQs[ynOrder[ynIdx]];
-  var yBtn = document.getElementById('yn-yes');
-  var nBtn = document.getElementById('yn-no');
-  yBtn.disabled = true;
-  nBtn.disabled = true;
-  var ans = q.p === 'she'
-    ? (q.a ? 'Yes, she does' : "No, she doesn't")
-    : (q.a ? 'Yes, he does'  : "No, he doesn't");
-  var fb = document.getElementById('yn-fb');
+function answerYN(userYes) {
+  if (ynAnswered) return;
+  ynAnswered = true;
+  var q = hairYNQ[ynOrder[ynIdx]];
+  var yesBtn = document.getElementById("yn-yes");
+  var noBtn  = document.getElementById("yn-no");
+  yesBtn.disabled = true;
+  noBtn.disabled  = true;
+  var correctAns = q.p === "she"
+    ? (q.a ? "Yes, she does" : "No, she doesn\u2019t")
+    : (q.a ? "Yes, he does"  : "No, he doesn\u2019t");
+  var fb = document.getElementById("yn-fb");
   if (userYes === q.a) {
-    ynC++; ynStr++;
-    var cb = userYes ? yBtn : nBtn;
-    cb.style.background='#ecfdf5'; cb.style.borderColor='#059669'; cb.style.color='#065f46';
-    fb.textContent = (ynStr>=3) ? '&#10003; Correcto! &#128293; Racha '+ynStr+'!' : '&#10003; Correcto!';
-    fb.className = 'feedback correct';
+    ynC++; ynS++;
+    (userYes ? yesBtn : noBtn).style.background="#ecfdf5";
+    (userYes ? yesBtn : noBtn).style.borderColor="#059669";
+    (userYes ? yesBtn : noBtn).style.color="#065f46";
+    fb.textContent = "\u2713 Correcto!" + (ynS>=3 ? " \uD83D\uDD25 Racha "+ynS+"!" : "");
+    fb.className = "feedback correct";
   } else {
-    ynW++; ynStr=0;
-    var wb = userYes ? yBtn : nBtn;
-    var rb = userYes ? nBtn : yBtn;
-    wb.style.background='#fef2f2'; wb.style.borderColor='#dc2626'; wb.style.color='#991b1b';
-    rb.style.background='#ecfdf5'; rb.style.borderColor='#059669'; rb.style.color='#065f46';
-    fb.textContent = 'Era: ' + ans;
-    fb.className = 'feedback wrong';
+    ynW++; ynS=0;
+    (userYes ? yesBtn : noBtn).style.background="#fef2f2";
+    (userYes ? yesBtn : noBtn).style.borderColor="#dc2626";
+    (userYes ? yesBtn : noBtn).style.color="#991b1b";
+    (userYes ? noBtn : yesBtn).style.background="#ecfdf5";
+    (userYes ? noBtn : yesBtn).style.borderColor="#059669";
+    (userYes ? noBtn : yesBtn).style.color="#065f46";
+    fb.textContent = "\u2717 Era: " + correctAns;
+    fb.className = "feedback wrong";
   }
-  speak(ans);
-  document.getElementById('yn-c').textContent = ynC;
-  document.getElementById('yn-w').textContent = ynW;
-  document.getElementById('yn-s').textContent = ynStr;
-  document.getElementById('yn-next').style.display = 'inline-flex';
+  speak(correctAns);
+  document.getElementById("yn-c").textContent = ynC;
+  document.getElementById("yn-w").textContent = ynW;
+  document.getElementById("yn-s").textContent = ynS;
+  document.getElementById("yn-next").style.display = "inline-flex";
 }
 
-function ynNext() {
+function nextYN() {
   ynIdx++;
-  if (ynIdx >= ynQs.length) {
-    show('s-result');
-    document.getElementById('r-score').textContent = ynC + '/8';
+  if (ynIdx >= hairYNQ.length) {
+    show("s-yn-result");
+    document.getElementById("yn-score").textContent = ynC + "/8";
     var pct = ynC / 8;
-    document.getElementById('r-stars').textContent = pct>=0.9?'&#11088;&#11088;&#11088;':pct>=0.7?'&#11088;&#11088;':pct>=0.5?'&#11088;':'&#128170;';
-    document.getElementById('r-sub').textContent = pct>=0.9?'Perfecto!':pct>=0.7?'Muy bien!':pct>=0.5?'Practiquemos mas.':'Sigamos!';
+    var stars = pct >= 0.9 ? "\u2B50\u2B50\u2B50" : pct >= 0.7 ? "\u2B50\u2B50" : pct >= 0.5 ? "\u2B50" : "\uD83D\uDCAA";
+    var sub = pct >= 0.9 ? "Perfecto!" : pct >= 0.7 ? "Muy bien!" : pct >= 0.5 ? "Practiquemos mas." : "Sigamos!";
+    document.getElementById("yn-stars").textContent = stars;
+    document.getElementById("yn-sub").textContent = sub;
     return;
   }
-  ynLoad();
+  loadYN();
+}
+
+
+// ── helpers ──────────────────────────────────────────────────────────────
+function tap(id, fn) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('touchend', function(e){ e.preventDefault(); fn(); }, false);
+  el.addEventListener('click', fn);
+}
+function makeRange(n) { var a=[]; for(var i=0;i<n;i++) a.push(i); return a; }
+function showResult2(correct, total, retryFn) {
+  retryFn2 = retryFn;
+  show('s-result2');
+  document.getElementById('r2-score').textContent = correct+'/'+total;
+  var pct = correct/total;
+  var stars = pct>=0.9?'⭐⭐⭐':pct>=0.7?'⭐⭐':pct>=0.5?'⭐':'💪';
+  var sub   = pct>=0.9?'¡Perfecto!':pct>=0.7?'¡Muy bien!':pct>=0.5?'Practiquemos más.':'¡Sigamos!';
+  document.getElementById('r2-stars').textContent = stars;
+  document.getElementById('r2-sub').textContent = sub;
+}
+var retryFn2 = null;
+
+// ── navigation wiring ─────────────────────────────────────────────────────
+tap('btn-toggle-extra', function(){
+  var el = document.getElementById('s-home-extra');
+  var btn = document.getElementById('btn-toggle-extra');
+  if(el.style.display==='none'){el.style.display='block';btn.innerHTML='&#128218; Gram&#225;tica &amp; Body Parts &#9650;';}
+  else{el.style.display='none';btn.innerHTML='&#128218; Gram&#225;tica &amp; Body Parts &#9660;';}
+});
+tap('btn-body-vocab',  function(){ show('s-body-home'); });
+tap('btn-gr-have',     function(){ showGrammar('have'); });
+tap('btn-gr-dont',     function(){ showGrammar('dont'); });
+tap('btn-gr-does',     function(){ showGrammar('does'); });
+tap('bbh-back',        function(){ show('s-home'); });
+tap('bbh-quiz',        function(){ startBodyQuiz(); });
+tap('bbh-flip',        function(){ startBodyFlip(); });
+tap('bbq-back',        function(){ show('s-body-home'); });
+tap('bbf-back',        function(){ show('s-body-home'); });
+tap('gr-back',         function(){ show('s-home'); });
+tap('gr-practice',     function(){ startGrammarQuiz(); });
+tap('gq-back',         function(){ show('s-grammar'); });
+tap('bq-speak',        function(){ if(bqWord) speak(bqWord,'bq-speak'); });
+tap('bq-next',         function(){ nextBodyQ(); });
+tap('gq-next',         function(){ nextGramQ(); });
+tap('r2-retry',        function(){ if(retryFn2) retryFn2(); });
+tap('r2-home',         function(){ show('s-home'); });
+
+// ── Body Parts data ───────────────────────────────────────────────────────
+var bodyParts = [
+  {word:'eyes',    emoji:'👀', color:'#4A90D9', desc:'ojos'},
+  {word:'ears',    emoji:'👂', color:'#E8A87C', desc:'orejas'},
+  {word:'nose',    emoji:'👃', color:'#F5A623', desc:'nariz'},
+  {word:'mouth',   emoji:'👄', color:'#E74C3C', desc:'boca'},
+  {word:'teeth',   emoji:'🦷', color:'#94A3B8', desc:'dientes'},
+  {word:'hands',   emoji:'👐', color:'#10B981', desc:'manos'},
+  {word:'feet',    emoji:'🦶', color:'#F97316', desc:'pies'},
+  {word:'arms',    emoji:'💪', color:'#8B5CF6', desc:'brazos'},
+  {word:'legs',    emoji:'🦵', color:'#3B82F6', desc:'piernas'},
+  {word:'head',    emoji:'🗣️', color:'#6366F1', desc:'cabeza'},
+  {word:'face',    emoji:'😊', color:'#F59E0B', desc:'cara'},
+  {word:'neck',    emoji:'🧣', color:'#9B59B6', desc:'cuello'},
+  {word:'fingers', emoji:'🤞', color:'#059669', desc:'dedos'},
+  {word:'toes',    emoji:'🩴', color:'#EF4444', desc:'dedos del pie'}
+];
+
+// ── Body quiz ─────────────────────────────────────────────────────────────
+var bqIdx=0, bqC=0, bqW=0, bqS=0, bqOrder=[], bqAnswered=false, bqWord='';
+
+function startBodyQuiz(){
+  bqIdx=0;bqC=0;bqW=0;bqS=0;bqAnswered=false;
+  bqOrder=shuffle(makeRange(bodyParts.length));
+  show('s-body-quiz');loadBodyQ();
+}
+
+function loadBodyQ(){
+  bqAnswered=false;
+  document.getElementById('bq-fb').textContent='';document.getElementById('bq-fb').className='feedback';
+  document.getElementById('bq-next').style.display='none';
+  document.getElementById('bq-speak').classList.remove('playing');
+  document.getElementById('bq-prog').textContent=(bqIdx+1)+'/'+bodyParts.length;
+  document.getElementById('bq-c').textContent=bqC;
+  document.getElementById('bq-w').textContent=bqW;
+  document.getElementById('bq-s').textContent=bqS;
+  var ci=bqOrder[bqIdx];
+  var w=bodyParts[ci];
+  bqWord=w.word;
+  document.getElementById('bq-word').textContent=w.word;
+  var allIdx=[]; for(var _k=0;_k<bodyParts.length;_k++){if(_k!==ci)allIdx.push(_k);}
+  var pool=shuffle(allIdx);
+  var opts=shuffle([ci,pool[0],pool[1],pool[2]]);
+  var container=document.getElementById('bq-opts');
+  container.innerHTML='';
+  for(var _i=0;_i<opts.length;_i++){
+    (function(oidx){
+      var bw=bodyParts[oidx];
+      var d=document.createElement('div');
+      d.className='option-card';
+      d.style.borderTop='3px solid '+bw.color;
+      d.innerHTML='<span class="option-img" style="font-size:42px;display:flex;align-items:center;justify-content:center;height:100px">'+bw.emoji+'</span><div class="option-label" id="blbl-'+oidx+'">'+bw.word+'</div>';
+      d.addEventListener('touchend',function(e){e.preventDefault();selectBodyOpt(d,oidx,ci);},{passive:false});
+      d.onclick=function(){selectBodyOpt(d,oidx,ci);};
+      container.appendChild(d);
+    })(opts[_i]);
+  }
+  setTimeout(function(){speak(w.word,'bq-speak');},350);
+}
+
+function selectBodyOpt(el,chosen,correct){
+  if(bqAnswered)return;bqAnswered=true;
+  var cards=document.querySelectorAll('#bq-opts .option-card');
+  for(var i=0;i<cards.length;i++) cards[i].classList.add('disabled');
+  var lbls=document.querySelectorAll('#bq-opts .option-label');
+  for(var i=0;i<lbls.length;i++) lbls[i].classList.add('show');
+  var fb=document.getElementById('bq-fb');
+  if(chosen===correct){
+    el.classList.add('correct');bqC++;bqS++;
+    fb.textContent='✓ ¡Correcto!'+(bqS>=3?' 🔥 Racha '+bqS+'!':'');fb.className='feedback correct';
+  } else {
+    el.classList.add('wrong');bqW++;bqS=0;
+    var all=document.querySelectorAll('#bq-opts .option-label');
+    for(var i=0;i<all.length;i++){if(all[i].id==='blbl-'+correct){all[i].closest('.option-card').classList.add('correct');}}
+    fb.textContent='✗ Era: '+bodyParts[correct].word;fb.className='feedback wrong';
+  }
+  speak(bodyParts[correct].word,'bq-speak');
+  document.getElementById('bq-c').textContent=bqC;
+  document.getElementById('bq-w').textContent=bqW;
+  document.getElementById('bq-s').textContent=bqS;
+  document.getElementById('bq-next').style.display='inline-flex';
+}
+
+function nextBodyQ(){
+  bqIdx++;
+  if(bqIdx>=bodyParts.length){showResult2(bqC,bodyParts.length,startBodyQuiz);return;}
+  loadBodyQ();
+}
+
+// ── Body flip ─────────────────────────────────────────────────────────────
+function startBodyFlip(){
+  show('s-body-flip');
+  var grid=document.getElementById('body-flip-grid');
+  grid.innerHTML='';
+  for(var i=0;i<bodyParts.length;i++){
+    (function(bw){
+      var fc=document.createElement('div');fc.className='flip-card';
+      fc.innerHTML='<div class="flip-inner"><div class="flip-front" style="border-top:3px solid '+bw.color+'"><span class="fe">'+bw.emoji+'</span><span class="fhint">toca para ver</span></div><div class="flip-back" style="border-top:3px solid '+bw.color+'"><i class="ti ti-volume"></i><div class="fw">'+bw.word+'</div><div class="fd">'+bw.desc+'</div></div></div>';
+      var tog=function(e){if(e)e.preventDefault();var f=fc.classList.contains('flipped');fc.classList.toggle('flipped');if(!f)speak(bw.word);};
+      fc.addEventListener('touchend',tog,false);fc.onclick=tog;
+      grid.appendChild(fc);
+    })(bodyParts[i]);
+  }
+}
+
+// ── Grammar data ──────────────────────────────────────────────────────────
+var gramData = {
+  have:{
+    title:'have / has',
+    html:'<div class="gram-card"><h3>&#128218; La regla: <span class="hlg">have</span> vs <span class="hlb">has</span></h3><table class="gram-table"><tr><td class="gsubj">I, You, We, They</td><td><span class="vg">have</span></td></tr><tr><td class="gsubj">He, She, It</td><td><span class="vb">has</span></td></tr></table><div class="gex"><p>&#8226; I <span class="hlg">have</span> big eyes.</p><p>&#8226; She <span class="hlb">has</span> a small mouth.</p><p>&#8226; They <span class="hlg">have</span> short legs.</p><p>&#8226; He <span class="hlb">has</span> big ears.</p></div></div>',
+    qs:[
+      {s:'She ___ a big nose.',      opts:['have','has'],  ans:'has'},
+      {s:'I ___ two big eyes.',       opts:['have','has'],  ans:'have'},
+      {s:'He ___ small ears.',        opts:['have','has'],  ans:'has'},
+      {s:'They ___ long legs.',       opts:['have','has'],  ans:'have'},
+      {s:'We ___ small hands.',       opts:['have','has'],  ans:'have'},
+      {s:'It ___ a big mouth.',       opts:['have','has'],  ans:'has'},
+      {s:'You ___ big teeth.',        opts:['have','has'],  ans:'have'},
+      {s:'My sister ___ long hair.',  opts:['have','has'],  ans:'has'}
+    ]
+  },
+  dont:{
+    title:"don't / doesn't have",
+    html:"<div class=\"gram-card\"><h3>&#128218; La regla: <span class=\"hlr\">don't</span> vs <span class=\"hlp\">doesn't</span></h3><table class=\"gram-table\"><tr><td class=\"gsubj\">I, You, We, They</td><td><span class=\"vr\">don't have</span></td></tr><tr><td class=\"gsubj\">He, She, It</td><td><span class=\"vp\">doesn't have</span></td></tr></table><div class=\"gex\"><p>&#8226; I <span class=\"hlr\">don't have</span> red hair.</p><p>&#8226; She <span class=\"hlp\">doesn't have</span> big ears.</p><p>&#8226; They <span class=\"hlr\">don't have</span> short legs.</p><p>&#8226; He <span class=\"hlp\">doesn't have</span> a big nose.</p></div></div>",
+    qs:[
+      {s:"She ___ short legs.",         opts:["don't have","doesn't have"], ans:"doesn't have"},
+      {s:"I ___ big hands.",            opts:["don't have","doesn't have"], ans:"don't have"},
+      {s:"He ___ a small mouth.",       opts:["don't have","doesn't have"], ans:"doesn't have"},
+      {s:"We ___ long arms.",           opts:["don't have","doesn't have"], ans:"don't have"},
+      {s:"My brother ___ big feet.",    opts:["don't have","doesn't have"], ans:"doesn't have"},
+      {s:"They ___ curly hair.",        opts:["don't have","doesn't have"], ans:"don't have"},
+      {s:"She ___ blue eyes.",          opts:["don't have","doesn't have"], ans:"doesn't have"},
+      {s:"You ___ big ears.",           opts:["don't have","doesn't have"], ans:"don't have"}
+    ]
+  },
+  does:{
+    title:'Do / Does questions',
+    html:'<div class="gram-card"><h3>&#128218; Preguntas con <span class="hlg">Do</span> y <span class="hlb">Does</span></h3><table class="gram-table"><tr><td class="gsubj">Do + I/You/We/They</td><td><span class="vg">have</span></td></tr><tr><td class="gsubj">Does + He/She/It</td><td><span class="vb">have</span></td></tr></table><div class="gex"><p>&#8226; <span class="hlg">Do</span> you have long hair? &#8594; Yes, I <span class="hlg">do</span>. / No, I <span class="hlr">don\'t</span>.</p><p>&#8226; <span class="hlb">Does</span> she have curly hair? &#8594; Yes, she <span class="hlb">does</span>. / No, she <span class="hlr">doesn\'t</span>.</p><p>&#8226; <span class="hlb">Does</span> he have big ears? &#8594; Yes, he <span class="hlb">does</span>. / No, he <span class="hlr">doesn\'t</span>.</p></div></div>',
+    qs:[
+      {s:'___ she have long hair?',          opts:['Do','Does'], ans:'Does'},
+      {s:'___ you have curly hair?',          opts:['Do','Does'], ans:'Do'},
+      {s:'___ he have big ears?',             opts:['Do','Does'], ans:'Does'},
+      {s:'___ they have short legs?',         opts:['Do','Does'], ans:'Do'},
+      {s:'___ your sister have blond hair?',  opts:['Do','Does'], ans:'Does'},
+      {s:'___ we have big hands?',            opts:['Do','Does'], ans:'Do'},
+      {s:'___ that boy have dark hair?',      opts:['Do','Does'], ans:'Does'},
+      {s:'___ I have a small nose?',          opts:['Do','Does'], ans:'Do'}
+    ]
+  }
+};
+
+var curGramKey='', gqIdx=0, gqC=0, gqW=0, gqS=0, gqOrder=[], gqAnswered=false;
+
+function showGrammar(key){
+  curGramKey=key;
+  document.getElementById('gr-title').textContent=gramData[key].title;
+  document.getElementById('gr-content').innerHTML=gramData[key].html;
+  show('s-grammar');
+}
+
+function startGrammarQuiz(){
+  var data=gramData[curGramKey];
+  gqIdx=0;gqC=0;gqW=0;gqS=0;gqAnswered=false;
+  gqOrder=shuffle(makeRange(data.qs.length));
+  show('s-grammar-quiz');loadGramQ();
+}
+
+function loadGramQ(){
+  gqAnswered=false;
+  document.getElementById('gq-fb').textContent='';document.getElementById('gq-fb').className='feedback';
+  document.getElementById('gq-next').style.display='none';
+  var data=gramData[curGramKey];
+  document.getElementById('gq-prog').textContent=(gqIdx+1)+'/'+data.qs.length;
+  document.getElementById('gq-c').textContent=gqC;
+  document.getElementById('gq-w').textContent=gqW;
+  document.getElementById('gq-s').textContent=gqS;
+  var q=data.qs[gqOrder[gqIdx]];
+  document.getElementById('gq-sentence').textContent=q.s;
+  var container=document.getElementById('gq-opts');
+  container.innerHTML='';
+  for(var _i=0;_i<q.opts.length;_i++){
+    (function(opt){
+      var b=document.createElement('button');
+      b.className='gram-opt';b.textContent=opt;
+      b.addEventListener('touchend',function(e){e.preventDefault();selectGramOpt(b,opt,q);},false);
+      b.onclick=function(){selectGramOpt(b,opt,q);};
+      container.appendChild(b);
+    })(q.opts[_i]);
+  }
+  setTimeout(function(){speak(q.s.replace('___',q.ans));},300);
+}
+
+function selectGramOpt(el,chosen,q){
+  if(gqAnswered)return;gqAnswered=true;
+  var all=document.querySelectorAll('.gram-opt');
+  for(var i=0;i<all.length;i++) all[i].classList.add('gdisabled');
+  var fb=document.getElementById('gq-fb');
+  var full=q.s.replace('___',q.ans);
+  if(chosen===q.ans){
+    el.classList.add('correct');gqC++;gqS++;
+    fb.textContent='✓ ¡Correcto!'+(gqS>=3?' 🔥 Racha '+gqS+'!':'');fb.className='feedback correct';
+  } else {
+    el.classList.add('wrong');gqW++;gqS=0;
+    for(var i=0;i<all.length;i++){if(all[i].textContent===q.ans)all[i].classList.add('correct');}
+    fb.textContent='✗ Correcto: '+full;fb.className='feedback wrong';
+  }
+  speak(full);
+  document.getElementById('gq-c').textContent=gqC;
+  document.getElementById('gq-w').textContent=gqW;
+  document.getElementById('gq-s').textContent=gqS;
+  document.getElementById('gq-next').style.display='inline-flex';
+}
+
+function nextGramQ(){
+  gqIdx++;
+  var data=gramData[curGramKey];
+  if(gqIdx>=data.qs.length){showResult2(gqC,data.qs.length,startGrammarQuiz);return;}
+  loadGramQ();
 }
 
 </script>
